@@ -1,5 +1,16 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const count = computed(() => store.state.count);
+const doubleCount = computed(() => store.getters.doubleCount);
+
+const increment = () => {
+  store.dispatch("increment");
+};
 </script>
 
 <template>
@@ -11,7 +22,13 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div>
+    <p>Count: {{ count }}</p>
+    <p>Double Count: {{ doubleCount }}</p>
+    <button class="rounded-xl bg-blue-300 text-white" @click="increment">
+      Increment
+    </button>
+  </div>
 </template>
 
 <style scoped>
