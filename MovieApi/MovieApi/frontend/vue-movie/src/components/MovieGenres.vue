@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1>Movie Categories</h1>
-    <ul>
+    <div v-if="isLoading">Loading...</div>
+    <div v-else-if="error">{{ error.message }}</div>
+    <ul v-else>
       <li v-for="category in movieCategories" :key="category.id">
         {{ category.name }}
       </li>
@@ -9,29 +11,17 @@
   </div>
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
-import apiService from "../apiService";
+<script setup>
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  setup() {
-    const movieCategories = ref([]);
-
-    const fetchMovieCategories = async () => {
-      try {
-        const response = await apiService.getMovieCategories();
-        console.log(response, "response");
-        movieCategories.value = response.data.genres;
-      } catch (error) {
-        console.error("Error fetching movie categories:", error);
-      }
-    };
-
-    onMounted(fetchMovieCategories);
-
-    return {
-      movieCategories,
-    };
-  },
+const store = useStore();
+const movieCategories = computed(() => store.getters.movieCategories);
+const isLoading = computed(() => store.getters.isLoading);
+const error = computed(() => store.getters.error);
+const fetchCategories = () => {
+  store.dispatch("fetchMovieCategories");
 };
+
+onMounted(fetchCategories);
 </script>
