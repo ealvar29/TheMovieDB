@@ -34,7 +34,7 @@ const store = createStore({
 
       try {
         const response = await axios.get(
-          "https://localhost:7086/api/Categories"
+          "https://localhost:7086/api/MovieApi/genres"
         );
         commit("SET_MOVIE_CATEGORIES", response.data.genres);
       } catch (error) {

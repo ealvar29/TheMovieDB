@@ -1,11 +1,15 @@
+using MovieApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Access configuration
+var configuration = builder.Configuration;
 
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 // Add CORS services
 builder.Services.AddCors(options =>
 {
@@ -18,6 +22,13 @@ builder.Services.AddCors(options =>
                   .AllowCredentials();
         });
 });
+
+// Register the MovieApiService with the necessary base URL and bearer token
+builder.Services.AddSingleton<MovieApiService>(sp => new MovieApiService(
+    "https://api.themoviedb.org/3",
+    configuration["MovieApi:BearerToken"] // Access the BearerToken from appsettings.json
+));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 // Use CORS middleware
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();

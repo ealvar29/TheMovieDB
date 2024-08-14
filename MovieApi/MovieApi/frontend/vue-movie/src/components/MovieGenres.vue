@@ -5,7 +5,7 @@
     <div v-else-if="error">{{ error.message }}</div>
     <ul v-else>
       <li v-for="category in movieCategories" :key="category.id">
-        {{ category.name }}
+        {{ category.name }} || Id={{ category.id }}
       </li>
     </ul>
   </div>

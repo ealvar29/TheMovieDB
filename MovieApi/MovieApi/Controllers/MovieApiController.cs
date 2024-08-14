@@ -4,49 +4,33 @@ using RestSharp;
 using System.Text.Json;
 using System.Collections.Generic;
 using MovieApi.Models;
+using MovieApi.Services;
 
 namespace MovieApi.Controllers
 {
-    [Route("api/Categories")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MovieApiController : ControllerBase
     {
-        private readonly string _bearerToken;
+        private readonly MovieApiService _movieApiService;
 
-        public MovieApiController(IConfiguration configuration)
+        public MovieApiController(MovieApiService movieApiService)
         {
-            // Retrieve the token from appsettings.json
-            _bearerToken = configuration["MovieApi:BearerToken"]
-                ?? throw new InvalidOperationException("Bearer token not found in configuration.");
+            _movieApiService = movieApiService;
         }
 
-        // GET: api/Categories
-        [HttpGet]
-        public async Task<IActionResult> GetMovieCategories()
+        [HttpGet("genres")]
+        public async Task<IActionResult> GetMovieGenres()
         {
-            var options = new RestClientOptions("https://api.themoviedb.org/3/genre/movie/list?language=en");
-            var client = new RestClient(options);
-            var request = new RestRequest();
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {_bearerToken}");
-            var response = await client.GetAsync(request);
+            var genres = await _movieApiService.GetGenresAsync();
+            return Ok(genres);
+        }
 
-            if (response.IsSuccessful)
-            {
-                var jsonResponse = response.Content;
-
-                // Deserialize the JSON response
-                var genres = JsonSerializer.Deserialize<GenresResponse>(jsonResponse, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                return Ok(genres);
-            }
-            else
-            {
-                return StatusCode((int)response.StatusCode, response.StatusDescription);
-            }
+        [HttpPost("movies")]
+        public async Task<IActionResult> DiscoverMovies([FromBody] string genreId)
+        {
+            var movies = await _movieApiService.DiscoverMoviesByGenreAsync(genreId);
+            return Ok(movies);
         }
     }
 }
