@@ -2,7 +2,7 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
-
+import Genres from "./components/MovieGenres.vue";
 const store = useStore();
 
 const count = computed(() => store.state.count);
@@ -29,6 +29,7 @@ const increment = () => {
       Increment
     </button>
   </div>
+  <Genres />
 </template>
 
 <style scoped>

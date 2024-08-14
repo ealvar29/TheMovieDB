@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 // Add CORS services
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
+    options.AddPolicy("AllowAll",
         policy =>
         {
             policy.WithOrigins("http://localhost:5173") // Add your front-end URL here
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 // Use CORS middleware
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
