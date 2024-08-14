@@ -11,8 +11,13 @@ namespace MovieApi.Controllers
     [ApiController]
     public class MovieApiController : ControllerBase
     {
-        public MovieApiController()
+        private readonly string _bearerToken;
+
+        public MovieApiController(IConfiguration configuration)
         {
+            // Retrieve the token from appsettings.json
+            _bearerToken = configuration["MovieApi:BearerToken"]
+                ?? throw new InvalidOperationException("Bearer token not found in configuration.");
         }
 
         // GET: api/Categories
@@ -23,7 +28,7 @@ namespace MovieApi.Controllers
             var client = new RestClient(options);
             var request = new RestRequest();
             request.AddHeader("accept", "application/json");
-            request.AddHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYTBkZDZmM2QwZmVhODZmMTA1NTIwMTAyOWY1ZTJhOSIsIm5iZiI6MTcyMjk3OTI5Ny43MjgzODksInN1YiI6IjYwYzUyYzFhN2E5N2FiMDA0MmIzN2FhMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.PgyQ_KGH721zQhHOILJKlgQkBT07LVsKhC6U2W01MGA");
+            request.AddHeader("Authorization", $"Bearer {_bearerToken}");
             var response = await client.GetAsync(request);
 
             if (response.IsSuccessful)
