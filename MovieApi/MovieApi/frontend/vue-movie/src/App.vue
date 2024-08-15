@@ -3,6 +3,8 @@ import HelloWorld from "./components/HelloWorld.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import Genres from "./components/MovieGenres.vue";
+import Button from "primevue/button";
+
 const store = useStore();
 
 const count = computed(() => store.state.count);
@@ -15,14 +17,7 @@ const increment = () => {
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <div>
+    <Button>Testing</Button>
     <p>Count: {{ count }}</p>
     <p>Double Count: {{ doubleCount }}</p>
     <button class="rounded-xl bg-blue-300 text-white" @click="increment">
