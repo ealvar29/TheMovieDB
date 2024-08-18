@@ -34,11 +34,11 @@ namespace MovieApi.Controllers
         }
 
         [HttpGet("discover")]
-        public async Task<IActionResult> DiscoverMoviesByGenre([FromQuery] string genreId)
+        public async Task<IActionResult> DiscoverMoviesByGenre([FromQuery] IEnumerable<Genre> genreList)
         {
             try
             {
-                var movies = await _movieApiService.DiscoverMoviesByGenreAsync(genreId);
+                var movies = await _movieApiService.DiscoverMoviesByGenreAsync("");
                 return Ok(new { movies = movies });
             }
             catch (Exception ex)

@@ -29,6 +29,7 @@ const error = computed(() => store.getters.error);
 const addMovieGenre = (genreId) => {
   console.log(genreId);
   store.dispatch("addSelectedGenres", genreId);
+  removeCategory(genreId);
 };
 
 const fetchCategories = () => {

@@ -72,7 +72,10 @@ const store = createStore({
     },
   },
   getters: {
-    movieGenreList: (state) => state.movieGenreList,
+    movieGenreList: (state) =>
+      state.movieGenreList.filter(
+        (genre) => !state.selectedMoviesGenres.includes(genre)
+      ),
     selectedMoviesGenres: (state) => state.selectedMoviesGenres,
     isLoading: (state) => state.loading,
     error: (state) => state.error,
