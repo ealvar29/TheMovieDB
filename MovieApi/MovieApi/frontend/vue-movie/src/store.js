@@ -54,6 +54,34 @@ const store = createStore({
         commit("SET_LOADING", false);
       }
     },
+    async fetchMovies({ state, commit }) {
+      commit("SET_LOADING", true);
+      commit("SET_ERROR", null);
+
+      try {
+        // Convert the reactive array to a plain array
+        const plainSelectedGenres = state.selectedMoviesGenres.map((genre) => ({
+          id: genre.id,
+          name: genre.name,
+        }));
+
+        console.log("Plain Selected Genres:", plainSelectedGenres); // Check the plain array
+
+        const response = await axios.post(
+          "https://localhost:7086/api/MovieApi/discover",
+          plainSelectedGenres // Send the plain array
+        );
+
+        console.log("inside fetchMovies");
+        commit("SET_MOVIE_CATEGORIES", response.data.genres);
+      } catch (error) {
+        commit("SET_ERROR", error);
+        console.error("Error fetching movie categories:", error);
+      } finally {
+        commit("SET_LOADING", false);
+      }
+    },
+
     async discoverMoviesByGenre({ commit }, genreId) {
       commit("SET_LOADING", true);
       commit("SET_ERROR", null);

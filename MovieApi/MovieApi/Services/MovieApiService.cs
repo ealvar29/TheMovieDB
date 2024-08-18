@@ -46,9 +46,18 @@ namespace MovieApi.Services
             }
         }
 
-        public async Task<DiscoverMoviesResponse> DiscoverMoviesByGenreAsync(string genreId)
+        public async Task<DiscoverMoviesResponse> DiscoverMoviesByGenreAsync(IEnumerable<Genre> genreList)
         {
-            var request = CreateRequest($"/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genreId}");
+            RestRequest request = null;
+            if (genreList.Any() && genreList.Count() < 2)
+            {
+                request = CreateRequest($"/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genreList.FirstOrDefault().Id}");
+            }
+            else if(genreList.Any() && genreList.Count() > 1)
+            {
+                string commaListed = string.Join(",", genreList.Select(x => x.Id));
+                request = CreateRequest($"/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={commaListed}");
+            }
             var response = await _client.GetAsync(request);
 
             if (response.IsSuccessful)

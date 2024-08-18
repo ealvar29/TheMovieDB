@@ -10,10 +10,9 @@ const count = computed(() => store.state.count);
 const doubleCount = computed(() => store.getters.doubleCount);
 const movieGenreList = computed(() => store.state.movieGenreList);
 const selectedGenreList = computed(() => store.state.selectedMoviesGenres);
-console.log(selectedGenreList, "selected Genres");
 
-const increment = () => {
-  store.dispatch("increment");
+const fetchMovies = () => {
+  store.dispatch("fetchMovies");
 };
 </script>
 
@@ -27,8 +26,8 @@ const increment = () => {
     </p>
     <p v-else>No Movie Genre</p>
     <p>Double Count: {{ doubleCount }}</p>
-    <button class="rounded-xl bg-blue-300 text-white" @click="increment">
-      Increment
+    <button class="rounded-xl px-4 bg-blue-400 text-white" @click="fetchMovies">
+      Find Movies!
     </button>
   </div>
   <Genres />

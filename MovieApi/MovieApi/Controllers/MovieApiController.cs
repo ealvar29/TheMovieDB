@@ -26,19 +26,19 @@ namespace MovieApi.Controllers
             return Ok(genres);
         }
 
-        [HttpPost("movies")]
+        /*[HttpPost("movies")]
         public async Task<IActionResult> DiscoverMovies([FromBody] string genreId)
         {
             var movies = await _movieApiService.DiscoverMoviesByGenreAsync(genreId);
             return Ok(movies);
-        }
+        }*/
 
-        [HttpGet("discover")]
-        public async Task<IActionResult> DiscoverMoviesByGenre([FromQuery] IEnumerable<Genre> genreList)
+        [HttpPost("discover")]
+        public async Task<IActionResult> DiscoverMoviesByGenre([FromBody] IEnumerable<Genre> genreList)
         {
             try
             {
-                var movies = await _movieApiService.DiscoverMoviesByGenreAsync("");
+                var movies = await _movieApiService.DiscoverMoviesByGenreAsync(genreList);
                 return Ok(new { movies = movies });
             }
             catch (Exception ex)
