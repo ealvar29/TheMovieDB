@@ -9,7 +9,7 @@
         v-for="genre in movieGenreList"
         :key="genre.id"
         :label="genre.name"
-        @click="addMovieGenre(genre.id)"
+        @click="addMovieGenre(genre)"
       />
     </div>
   </div>

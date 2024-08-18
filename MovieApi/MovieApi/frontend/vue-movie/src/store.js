@@ -20,8 +20,7 @@ const store = createStore({
     },
     SET_SELECTED_GENRES(state, selectedGenre) {
       console.log(selectedGenre, "inside Set Selected Movies");
-      state.selectedMoviesGenres =
-        state.selectedMoviesGenres.push(selectedGenre);
+      state.selectedMoviesGenres.push(selectedGenre);
     },
     SET_LOADING(state, isLoading) {
       state.loading = isLoading;

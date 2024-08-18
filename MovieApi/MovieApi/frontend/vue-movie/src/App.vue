@@ -21,7 +21,11 @@ const increment = () => {
   <div>
     <Button>Testing</Button>
     <p>Count: {{ count }}</p>
-    <p>Selected Genres: {{ selectedGenreList }}</p>
+    <p v-if="selectedGenreList.length > 0">
+      Selected Genres:
+      <span v-for="genre in selectedGenreList"> {{ genre.name }}, </span>
+    </p>
+    <p v-else>No Movie Genre</p>
     <p>Double Count: {{ doubleCount }}</p>
     <button class="rounded-xl bg-blue-300 text-white" @click="increment">
       Increment
