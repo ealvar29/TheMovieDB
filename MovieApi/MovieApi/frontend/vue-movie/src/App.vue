@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import Genres from "./components/MovieGenres.vue";
@@ -9,6 +8,9 @@ const store = useStore();
 
 const count = computed(() => store.state.count);
 const doubleCount = computed(() => store.getters.doubleCount);
+const movieGenreList = computed(() => store.state.movieGenreList);
+const selectedGenreList = computed(() => store.state.selectedMoviesGenres);
+console.log(selectedGenreList, "selected Genres");
 
 const increment = () => {
   store.dispatch("increment");
@@ -19,6 +21,7 @@ const increment = () => {
   <div>
     <Button>Testing</Button>
     <p>Count: {{ count }}</p>
+    <p>Selected Genres: {{ selectedGenreList }}</p>
     <p>Double Count: {{ doubleCount }}</p>
     <button class="rounded-xl bg-blue-300 text-white" @click="increment">
       Increment

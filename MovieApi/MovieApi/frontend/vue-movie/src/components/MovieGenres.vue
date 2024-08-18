@@ -6,9 +6,10 @@
     <div v-else class="card flex flex-wrap gap-2">
       <Chip
         class="border-xl rounded-xl bg-slate-300"
-        v-for="category in movieCategories"
-        :key="category.id"
-        :label="category.name"
+        v-for="genre in movieGenreList"
+        :key="genre.id"
+        :label="genre.name"
+        @click="addMovieGenre(genre.id)"
       />
     </div>
   </div>
@@ -21,9 +22,14 @@ import Chip from "primevue/chip";
 
 const store = useStore();
 const selectedGenres = ref([]); // Store selected genres
-const movieCategories = computed(() => store.getters.movieCategories);
+const movieGenreList = computed(() => store.getters.movieGenreList);
 const isLoading = computed(() => store.getters.isLoading);
 const error = computed(() => store.getters.error);
+
+const addMovieGenre = (genreId) => {
+  console.log(genreId);
+  store.dispatch("addSelectedGenres", genreId);
+};
 
 const fetchCategories = () => {
   store.dispatch("fetchMovieCategories");

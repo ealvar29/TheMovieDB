@@ -5,7 +5,8 @@ const store = createStore({
   state() {
     return {
       count: 0,
-      movieCategories: [],
+      movieGenreList: [],
+      selectedMoviesGenres: [],
       loading: false,
       error: null,
     };
@@ -14,8 +15,13 @@ const store = createStore({
     increment(state) {
       state.count++;
     },
-    SET_MOVIE_CATEGORIES(state, categories) {
-      state.movieCategories = categories;
+    SET_MOVIE_CATEGORIES(state, genres) {
+      state.movieGenreList = genres;
+    },
+    SET_SELECTED_GENRES(state, selectedGenre) {
+      console.log(selectedGenre, "inside Set Selected Movies");
+      state.selectedMoviesGenres =
+        state.selectedMoviesGenres.push(selectedGenre);
     },
     SET_LOADING(state, isLoading) {
       state.loading = isLoading;
@@ -27,6 +33,11 @@ const store = createStore({
   actions: {
     increment(context) {
       context.commit("increment");
+    },
+    addSelectedGenres({ commit }, genreId) {
+      console.log(commit);
+      console.log(genreId);
+      commit("SET_SELECTED_GENRES", genreId);
     },
     async fetchMovieCategories({ commit }) {
       commit("SET_LOADING", true);
@@ -44,9 +55,26 @@ const store = createStore({
         commit("SET_LOADING", false);
       }
     },
+    async discoverMoviesByGenre({ commit }, genreId) {
+      commit("SET_LOADING", true);
+      commit("SET_ERROR", null);
+
+      try {
+        const response = await axios.get(
+          `https://localhost:7086/api/MovieApi/discover?genreId=${genreId}`
+        );
+        commit("SET_DISCOVERED_MOVIES", response.data.movies);
+      } catch (error) {
+        commit("SET_ERROR", error);
+        console.error("Error discovering movies:", error);
+      } finally {
+        commit("SET_LOADING", false);
+      }
+    },
   },
   getters: {
-    movieCategories: (state) => state.movieCategories,
+    movieGenreList: (state) => state.movieGenreList,
+    selectedMoviesGenres: (state) => state.selectedMoviesGenres,
     isLoading: (state) => state.loading,
     error: (state) => state.error,
     doubleCount(state) {
